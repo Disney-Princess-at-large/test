@@ -2,9 +2,9 @@
   <div>
     <p>请选择你要购买的书籍</p>
     <ul>
-      <li v-for="(item,index) in arr" :key="index">
-      {{item.name}}
-      <button @click="addFn(index)">买书</button>
+      <li v-for="(item, index) in arr" :key="index">
+        {{ item.name }}
+        <button @click="addFn(index)">买书</button>
       </li>
     </ul>
     <table border="1" width="500" cellspacing="0">
@@ -15,17 +15,17 @@
         <th>数量</th>
         <th>合计</th>
       </tr>
-    <tbody>
-      <tr v-for="(item,index) in arr" :key="index">
-        <td>{{index + 1}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.price}}</td>
-        <td>{{item.count}}</td>
-        <td>{{item.count * item.price}}</td>
-      </tr>
-    </tbody>
+      <tbody>
+        <tr v-for="(item, index) in arr" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.count }}</td>
+          <td>{{ item.count * item.price }}</td>
+        </tr>
+      </tbody>
     </table>
-    <p>总价格为: {{allprice}}</p>
+    <p>总价格为: {{ allprice }}</p>
   </div>
 </template>
 
@@ -35,38 +35,37 @@ export default {
     return {
       arr: [
         {
-          name: "水浒传",
+          name: '水浒传',
           price: 107,
           count: 0,
         },
         {
-          name: "西游记",
+          name: '西游记',
           price: 192,
           count: 0,
         },
         {
-          name: "三国演义",
+          name: '三国演义',
           price: 219,
           count: 0,
         },
         {
-          name: "红楼梦",
+          name: '红楼梦',
           price: 178,
           count: 0,
         },
       ],
-      allprice:0
-    };
-  },
-  methods: {
-    addFn(index){
-      this.arr[index].count++;
-      this.allprice = this.arr.reduce((sum,item) => {
-       return sum + item.price*item.count
-      }, 0)
+      allprice: 0,
     }
   },
-};
+  methods: {
+    addFn(index) {
+      this.arr[index].count++
+      this.allprice = this.arr.reduce((sum, item) => {
+        return sum + item.price * item.count
+      }, 0)
+    },
+  },
+}
 </script>
-<style>
-</style>
+<style></style>
