@@ -1,14 +1,25 @@
-<!-- 目标: 点击生成按钮, 新增一个li(随机数字)和删除按钮, 点击删除按钮, 删除对应的li和值
-提示: 数组渲染列表, 生成和删除都围绕数组操作 -->
-
 <template>
-  <div>
-    <ul>
-      <li v-for="(item, index) in arr" :key="index">
-      {{ item }}
-      <button @click="del(index)">删除</button></li>
-      <button @click="addFn">生成</button>
-    </ul>
+  <div id="app">
+    <table class="tb">
+      <tr>
+        <th>编号</th>
+        <th>品牌名称</th>
+        <th>创立时间</th>
+        <th>操作</th>
+      </tr>
+      <!-- 循环渲染的元素tr -->
+      <tr v-for="item in list" :key="item.id">
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.time }}</td>
+        <td>
+          <button @click="delBtn(item.id)">删除</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" v-if="list.length == 0">没有数据咯~</td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -16,21 +27,49 @@
 export default {
   data() {
     return {
-      arr: [1,5,3],
-    }
+      list: [
+        { id: 1, name: "奔驰", time: "2020-08-01" },
+        { id: 2, name: "宝马", time: "2020-08-02" },
+        { id: 3, name: "奥迪", time: "2020-08-03" },
+      ],
+    };
   },
+
   methods: {
-    addFn(){
-      let num = Math.floor(Math.random() * 9)
-      this.arr.push(num)
-    },
-    del(index){
-      this.arr.splice(index, 1)
+    delBtn(id){
+     let index = this.list.findIndex(item => item.id == id)
+     this.list.splice(index, 1);
     }
   },
-}
+};
 </script>
 
 <style>
+#app {
+  width: 600px;
+  margin: 10px auto;
+}
 
+.tb {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tb th {
+  background-color: #0094ff;
+  color: white;
+}
+
+.tb td,
+.tb th {
+  padding: 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.add {
+  padding: 5px;
+  border: 1px solid black;
+  margin-bottom: 10px;
+}
 </style>
