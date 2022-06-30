@@ -1,169 +1,104 @@
+<!-- - 需求1: 铺设页面, 准备初始的数据(自己手写数据结构) - 前面是数组索引+1 *作为序号
+- 需求2: 当输入框没有值, 要给用户一个提示, 必须都有值才能增加新数据 (数据驱动页面哦)
+- 需求3: 添加功能 - 想好数据结构统一对象的key
+- 需求4: 点击编辑功能, 把值赋予到输入框上(不要操作dom, 数据驱动页面)
+- 需求5: 用户修改后, 点击相同按钮 - 想想怎么判断怎么是添加还是修改的功能 (提示: 准备一个全局变量, 点过编辑按钮可以让它为true) - 实现编辑后更新页面效果
+- 需求6: 点击删除, 删除这行数据 -->
 <template>
-  <div class="wrap">
-    <div class="nav_left" id="navLeft">
-      <div class="nav_content">
-        <span :class="{active : currentIndex === item.first_id}" v-for="item in arr " :key="item.first_id"
-        @click="btn(item.first_id)">{{item.first_name}}</span>
-      </div>
+  <div id="app">
+    <div>
+      <span>姓名:</span>
+      <input type="text" v-model.trim="name" />
     </div>
-    <div class="down">
-      <i class="iconfont icon-xiajiantoubeifen gray"></i>
+    <div>
+      <span>年龄:</span>
+      <input type="number" v-model.number="age" />
+    </div>
+    <div>
+      <span>性别:</span>
+      <select v-model="sex">
+        <option value="男">男</option>
+        <option value="女">女</option>
+      </select>
+    </div>
+    <div>
+      <button @click="addFn">添加/修改</button>
+    </div>
+    <div>
+      <table border="1" cellpadding="10" cellspacing="0">
+        <tr>
+          <th>序号</th>
+          <th>姓名</th>
+          <th>年龄</th>
+          <th>性别</th>
+          <th>操作</th>
+        </tr>
+        <tr v-for="item in arr" :key="item.id">
+          <td>{{ item.id }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.age }}</td>
+          <td>{{ item.sex }}</td>
+          <td>
+            <button @click="delFn(item.id)">删除</button>
+            <button @click="editFn(item.id)">编辑</button>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
     return {
-      arr: [
-        {
-          first_id: '0',
-          first_name: '热门',
-        },
-        {
-          first_id: '621',
-          first_name: '\u5496\u5561',
-        },
-        {
-          first_id: '627',
-          first_name: '\u996e\u98df',
-        },
-        {
-          first_id: '279',
-          first_name: '\u7537\u88c5',
-        },
-        {
-          first_id: '294',
-          first_name: '\u5973\u88c5',
-        },
-        {
-          first_id: '122',
-          first_name: '\u773c\u955c',
-        },
-        {
-          first_id: '339',
-          first_name: '\u5185\u8863\u914d\u9970',
-        },
-        {
-          first_id: '391',
-          first_name: '\u6bcd\u5a74',
-        },
-        {
-          first_id: '35',
-          first_name: '\u978b\u9774',
-        },
-        {
-          first_id: '39',
-          first_name: '\u8fd0\u52a8',
-        },
-        {
-          first_id: '153',
-          first_name: '\u7bb1\u5305',
-        },
-        {
-          first_id: '119',
-          first_name: '\u7f8e\u5986\u4e2a\u62a4',
-        },
-        {
-          first_id: '355',
-          first_name: '\u5bb6\u7eba',
-        },
-        {
-          first_id: '51',
-          first_name: '\u9910\u53a8',
-        },
-        {
-          first_id: '334',
-          first_name: '\u7535\u5668',
-        },
-        {
-          first_id: '369',
-          first_name: '\u5bb6\u88c5',
-        },
-        {
-          first_id: '10',
-          first_name: '\u5bb6\u5177',
-        },
-        {
-          first_id: '223',
-          first_name: '\u6570\u7801',
-        },
-        {
-          first_id: '429',
-          first_name: '\u6c7d\u914d',
-        },
-        {
-          first_id: '546',
-          first_name: '\u5065\u5eb7\u4fdd\u5065',
-        },
-        {
-          first_id: '433',
-          first_name: '\u5b9a\u5236',
-        },
-      ],
-    currentIndex:0
+      id:'',
+      arr: [],
+      name: '',
+      age: '',
+      sex: '男',
+      flag :true
     }
   },
   methods: {
-    btn(id){
+    addFn() {
+      if (this.flag) {
+        if (this.name === '' || this.age === '') {
+          this.name = ''
+          this.age = ''
+          return alert('Please enter age and name')
+        }
+        this.arr.push({
+          id: this.arr.length + 1,
+          name: this.name,
+          age: this.age,
+          sex: this.sex,
+        })
+        this.name = ''
+        this.age = ''
+      }else{
+        this.arr[this.id-1].name = this.name
+        this.arr[this.id-1].age = this.age
+        this.arr[this.id-1].sex = this.sex
+        this.name = ''
+        this.age = ''
+        this.flag = true
 
-      this.currentIndex = id
+      }
+    },
+    editFn(id) {
+      this.flag = false
+      if (!this.flag) {
+        let index = this.arr.findIndex((item) => item.id === id)
+        this.name = this.arr[index].name
+        this.age = this.arr[index].age
+        this.sex = this.arr[index].sex
+        this.id = id
+        // flag = true
+      }
+    },
+    delFn(id){
+      this.arr.splice(id-1,1)
     }
   },
 }
 </script>
-
-<style>
-.wrap {
-  width: 100%;
-  display: flex;
-  margin: 0.2rem 0 0 0;
-  position: relative;
-}
-
-/*左侧的导航样式*/
-.nav_left {
-  width: 21.1875rem;
-  overflow: scroll;
-}
-
-.nav_left::-webkit-scrollbar {
-  display: none;
-}
-
-.nav_content {
-  white-space: nowrap;
-  padding: 0 0.7rem;
-}
-
-.nav_content span {
-  display: inline-block;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.875rem;
-}
-
-.nav_content .active {
-  border-bottom: 2px solid #7f4395;
-  color: #7f4395;
-}
-
-.nav_left,
-.down {
-  float: left;
-}
-
-/*右侧导航部分*/
-.down {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gray {
-  color: gray;
-  display: inline-block;
-  vertical-align: middle;
-}
-</style>
