@@ -1,25 +1,34 @@
 <template>
   <div>
-    <p v-show="isShow">我是v-show控制的标签</p>
-    <button @click="isShow = !isShow">v-show</button>
-    <br>
-    <p v-if="isShow1">我是v-if控制的标签</p>
-    <button @click="isShow1 = !isShow1">v-if</button>
-
+    <ul>
+      <li v-for="(val, index) in arr" :key="index">
+        {{ val }}
+      </li>
+    </ul>
+    <button @click="revBtn">数组翻转</button>
+    <button @click="sliceBtn">截取前3个</button>
+    <button @click="updateBtn">更新第一个元素值</button>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
+  data(){
     return {
-      isShow1:false,
-      isShow:false,
+      arr: [5, 3, 9, 2, 1]
     }
   },
+  methods: {
+    revBtn(){
+      this.arr.reverse()
+    },
+    sliceBtn(){
+      let newArr = this.arr.slice(0, 3)
+      this.arr = newArr
+    },
+    updateBtn(){
+      this.$set(this.arr, 0, 1000)
+    }
+  }
 }
 </script>
-
-<style>
-
-</style>
